@@ -1,0 +1,372 @@
+<!-- checkout.html -->
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERDE SKIN | إتمام الطلب</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .checkout-page {
+            padding: 8rem 5% 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .checkout-form-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .checkout-form-container h2 {
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            position: relative;
+        }
+        
+        .checkout-form-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--deep-green);
+            border-radius: 2px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f9f9f9;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--deep-green);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(27, 77, 62, 0.1);
+            background: white;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .order-summary-card {
+            background: var(--soft-cream);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            align-self: start;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .order-summary-card h2 {
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        
+        .order-items {
+            margin-bottom: 2rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-item-name {
+            font-weight: 500;
+        }
+        
+        .order-item-price {
+            font-weight: 600;
+            color: var(--deep-green);
+        }
+        
+        .order-item-price::after {
+            content: ' DA';
+        }
+        
+        .order-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-size: 1.2rem;
+            border-top: 2px solid #ddd;
+        }
+        
+        .order-grand-total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--deep-green);
+        }
+        
+        .payment-methods {
+            margin: 2rem 0;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--deep-green);
+            background: rgba(27, 77, 62, 0.05);
+        }
+        
+        .payment-method input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--deep-green);
+        }
+        
+        .place-order-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--deep-green);
+            color: white;
+            border: none;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .place-order-btn:hover {
+            background: var(--gold-green);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+            .order-summary-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="luxury-header">
+        <div class="header-container">
+            <div class="logo">VERDE<span>SKIN</span></div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">الرئيسية</a>
+                <a href="index.html#products" class="nav-link">المجموعة</a>
+                <a href="index.html#about" class="nav-link">القصة</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-button" id="cartToggle" aria-label="السلة">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="checkout-page">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">إتمام الطلب</h1>
+        <div class="checkout-grid">
+            <div class="checkout-form-container">
+                <h2>معلومات التوصيل</h2>
+                <form id="checkoutForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الاسم</label>
+                            <input type="text" id="firstName" placeholder="محمد" required>
+                        </div>
+                        <div class="form-group">
+                            <label>اللقب</label>
+                            <input type="text" id="lastName" placeholder="أحمد" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>العنوان الكامل</label>
+                        <input type="text" id="address" placeholder="رقم 12، شارع الاستقلال، الجزائر العاصمة" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الولاية</label>
+                            <select id="wilaya" required>
+                <option value="">اختر الولاية</option>
+                <option value="1">أدرار</option>
+                <option value="2">الشلف</option>
+                <option value="3">الأغواط</option>
+                <option value="4">أم البواقي</option>
+                <option value="5">باتنة</option>
+                <option value="6">بجاية</option>
+                <option value="7">بسكرة</option>
+                <option value="8">بشار</option>
+                <option value="9">البليدة</option>
+                <option value="10">البويرة</option>
+                <option value="11">تمنراست</option>
+                <option value="12">تبسة</option>
+                <option value="13">تلمسان</option>
+                <option value="14">تيارت</option>
+                <option value="15">تيزي وزو</option>
+                <option value="16">الجزائر</option>
+                <option value="17">الجلفة</option>
+                <option value="18">جيجل</option>
+                <option value="19">سطيف</option>
+                <option value="20">سعيدة</option>
+                <option value="21">سكيكدة</option>
+                <option value="22">سيدي بلعباس</option>
+                <option value="23">عنابة</option>
+                <option value="24">قالمة</option>
+                <option value="25">قسنطينة</option>
+                <option value="26">المدية</option>
+                <option value="27">مستغانم</option>
+                <option value="28">المسيلة</option>
+                <option value="29">معسكر</option>
+                <option value="30">ورقلة</option>
+                <option value="31">وهران</option>
+                <option value="32">البيض</option>
+                <option value="33">إليزي</option>
+                <option value="34">برج بوعريريج</option>
+                <option value="35">بومرداس</option>
+                <option value="36">الطارف</option>
+                <option value="37">تندوف</option>
+                <option value="38">تيسمسيلت</option>
+                <option value="39">عين الدفلى</option>
+                <option value="40">النعامة</option>
+                <option value="41">عين تموشنت</option>
+                <option value="42">غرداية</option>
+                <option value="43">غليزان</option>
+                <option value="44">المغير</option>
+                <option value="45">المنيعة</option>
+                <option value="46">أولاد جلال</option>
+                <option value="47">بني عباس</option>
+                <option value="48">تيميمون</option>
+                <option value="49">تقرت</option>
+                <option value="50">الوادي</option>
+                <option value="51">خنشلة</option>
+                <option value="52">سوق أهراس</option>
+                <option value="53">تيبازة</option>
+                <option value="54">ميلة</option>
+                <option value="55">عين الدفلى</option>
+                <option value="56">النعامة</option>
+                <option value="57">عين تموشنت</option>
+                <option value="58">غرداية</option>
+              </select>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="tel" id="phone" placeholder="0555123456" required>
+                        </div>
+                    </div>
+                    <h2 style="margin-top: 2rem;">طريقة الدفع</h2>
+                    <div class="payment-methods">
+                        <label class="payment-method selected">
+              <input type="radio" name="payment" value="cod" checked> الدفع عند الاستلام
+            </label>
+                        <label class="payment-method">
+              <input type="radio" name="payment" value="card"> بطاقة ائتمان ( +2% رسوم )
+            </label>
+                    </div>
+                </form>
+            </div>
+
+            <div class="order-summary-card">
+                <h2>ملخص الطلب</h2>
+                <div class="order-items" id="orderItems"></div>
+                <div class="order-total-row">
+                    <span>المجموع الفرعي</span>
+                    <span id="orderSubtotal">0 DA</span>
+                </div>
+                <div class="order-total-row">
+                    <span>تكلفة التوصيل</span>
+                    <span id="orderShipping">500 DA</span>
+                </div>
+                <div class="order-total-row order-grand-total">
+                    <span>الإجمالي</span>
+                    <span id="orderTotal">0 DA</span>
+                </div>
+                <button class="place-order-btn" id="placeOrderBtn">تأكيد الطلب</button>
+                <p style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                    <i class="fas fa-shield-alt"></i> معلوماتك محمية وآمنة
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>سلة التسوق</h3>
+            <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>الإجمالي</span>
+                <span id="cartTotal">0 DA</span>
+            </div>
+            <button class="btn btn-primary checkout-btn" id="checkoutBtn">إتمام الشراء</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="toast-notification" id="toast"></div>
+
+    <!-- مودال تأكيد الطلب المحسن -->
+    <div class="order-modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-body" id="modalBody">
+                <!-- المحتوى سيتم إنشاؤه بواسطة JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="products.js"></script>
+    <script type="module" src="cart.js"></script>
+    <script type="module" src="checkout.js"></script>
+</body>
+
+</html>
